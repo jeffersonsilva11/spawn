@@ -26,8 +26,12 @@ async function bootstrap() {
   // CORS
   const corsOrigin = configService.get('CORS_ORIGIN') || '*';
   app.enableCors({
-    origin: corsOrigin.split(','),
+    origin: corsOrigin === '*' ? '*' : corsOrigin.split(','),
     credentials: true,
+    methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS'],
+    allowedHeaders: ['Content-Type', 'Authorization', 'Accept'],
+    exposedHeaders: ['Content-Range', 'X-Content-Range'],
+    maxAge: 3600,
   });
 
   // Port

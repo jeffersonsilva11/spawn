@@ -4,7 +4,7 @@
  * Custom Passport strategy for API key authentication (Unity SDK).
  */
 
-import { Injectable, UnauthorizedException } from '@nestjs/common';
+import { Injectable, UnauthorizedException, Inject } from '@nestjs/common';
 import { PassportStrategy } from '@nestjs/passport';
 import { Strategy } from 'passport-custom';
 import { Request } from 'express';
@@ -12,7 +12,10 @@ import { IStudioRepository } from '../../../domain/repositories';
 
 @Injectable()
 export class ApiKeyStrategy extends PassportStrategy(Strategy, 'api-key') {
-  constructor(private readonly studioRepository: IStudioRepository) {
+  constructor(
+    @Inject('IStudioRepository')
+    private readonly studioRepository: IStudioRepository,
+  ) {
     super();
   }
 

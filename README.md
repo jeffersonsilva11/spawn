@@ -45,31 +45,31 @@ spawn/
 
 ### Prerequisites
 
-- Node.js 18+
-- Docker Desktop (rodando)
-- Unity 2022 LTS+ (para builds de servidor)
+- **Node.js 18+** - Para rodar os apps localmente
+- **Docker Desktop** - Apenas para PostgreSQL (deve estar rodando)
+- **Unity 2022 LTS+** - Apenas para criar builds de servidor
 
-### Setup Automático (Recomendado)
+### Setup Completo em 1 Comando
 
 ```bash
 # 1. Clone o repositório
 git clone <repository-url>
 cd spawn
 
-# 2. Execute o script de setup
+# 2. Execute o script de setup (faz TUDO automaticamente)
 ./scripts/dev-setup.sh
 ```
 
-O script vai:
-- Verificar dependências
-- Instalar pacotes npm
-- Criar arquivo .env
-- Iniciar PostgreSQL no Docker
-- Resolver vulnerabilidades automaticamente
+**O script faz automaticamente:**
+- ✅ Cria todos os arquivos `.env` (backend, orchestrator, web-panel)
+- ✅ Instala todas as dependências npm
+- ✅ Inicia PostgreSQL no Docker
+- ✅ Verifica que tudo está funcionando
+- ✅ Mostra os próximos passos
 
-### Iniciar Desenvolvimento
+### Rodar Apps Localmente (Hot-Reload)
 
-Abra **3 terminais** e rode:
+Depois do setup, abra **3 terminais** e execute:
 
 ```bash
 # Terminal 1 - Backend
@@ -89,7 +89,32 @@ npm run dev
 
 - **Web Panel:** http://localhost:3002
 - **Backend API:** http://localhost:3000/health
-- **Docs:** `docs/` folder
+- **Orchestrator:** http://localhost:3001/health
+- **PostgreSQL:** localhost:5432
+
+### Comandos Úteis
+
+```bash
+# Parar PostgreSQL
+docker-compose -f docker-compose.dev.yml down
+
+# Ver logs do PostgreSQL
+docker-compose -f docker-compose.dev.yml logs -f postgres
+
+# Resetar banco de dados (⚠️ apaga tudo)
+docker-compose -f docker-compose.dev.yml down -v
+./scripts/dev-setup.sh
+```
+
+### Por que essa abordagem?
+
+📖 **Abordagem Híbrida (Recomendada para DEV)**
+- ⚡ **Hot-reload instantâneo** - Mudanças aparecem sem rebuild
+- 🐛 **Debugging fácil** - Breakpoints funcionam normalmente
+- 📝 **Logs claros** - Output direto no terminal
+- 🚀 **Desenvolvimento rápido** - Sem overhead de containers
+
+Para produção, usamos Docker completo. Veja [docs/development-approaches.md](./docs/development-approaches.md) para comparação detalhada.
 
 ### Problemas?
 

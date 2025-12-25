@@ -1,0 +1,46 @@
+{
+  "auth": {
+    "invalid_credentials": "E-mail ou senha inválidos",
+    "email_exists": "E-mail já existe",
+    "unauthorized": "Acesso não autorizado",
+    "token_expired": "Token de autenticação expirado",
+    "invalid_token": "Token de autenticação inválido"
+  },
+  "project": {
+    "not_found": "Projeto não encontrado",
+    "unauthorized": "Você não tem acesso a este projeto",
+    "name_required": "Nome do projeto é obrigatório",
+    "name_too_long": "Nome do projeto não pode exceder 100 caracteres"
+  },
+  "build": {
+    "not_found": "Build não encontrado",
+    "not_ready": "Build não está pronto para implantação",
+    "upload_failed": "Falha ao enviar o build",
+    "file_too_large": "Arquivo do build excede o tamanho máximo de 500MB",
+    "invalid_format": "Formato de arquivo de build inválido"
+  },
+  "server": {
+    "not_found": "Instância de servidor não encontrada",
+    "limit_reached": "Limite de servidores atingido. Máximo {{maxServers}} servidores permitidos",
+    "no_available_servers": "Nenhum servidor disponível encontrado. Por favor implante um servidor primeiro",
+    "deploy_failed": "Falha ao implantar o servidor",
+    "stop_failed": "Falha ao parar o servidor",
+    "cannot_stop": "Servidor não pode ser parado no status atual: {{status}}",
+    "no_available_ports": "Não há portas disponíveis para novos servidores"
+  },
+  "studio": {
+    "not_found": "Estúdio não encontrado",
+    "invalid_api_key": "Chave API inválida"
+  },
+  "validation": {
+    "email_invalid": "E-mail deve ser um endereço de e-mail válido",
+    "password_too_short": "Senha deve ter pelo menos 8 caracteres",
+    "required_field": "{{field}} é obrigatório",
+    "invalid_uuid": "Formato de ID inválido"
+  },
+  "general": {
+    "internal_error": "Erro interno do servidor. Por favor tente novamente mais tarde",
+    "not_found": "Recurso não encontrado",
+    "forbidden": "Você não tem permissão para realizar esta ação"
+  }
+}

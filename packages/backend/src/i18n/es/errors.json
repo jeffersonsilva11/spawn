@@ -1,0 +1,46 @@
+{
+  "auth": {
+    "invalid_credentials": "Correo o contraseña inválidos",
+    "email_exists": "El correo ya existe",
+    "unauthorized": "Acceso no autorizado",
+    "token_expired": "El token de autenticación ha expirado",
+    "invalid_token": "Token de autenticación inválido"
+  },
+  "project": {
+    "not_found": "Proyecto no encontrado",
+    "unauthorized": "No tienes acceso a este proyecto",
+    "name_required": "El nombre del proyecto es requerido",
+    "name_too_long": "El nombre del proyecto no puede exceder 100 caracteres"
+  },
+  "build": {
+    "not_found": "Build no encontrado",
+    "not_ready": "El build no está listo para despliegue",
+    "upload_failed": "Error al subir el build",
+    "file_too_large": "El archivo del build excede el tamaño máximo de 500MB",
+    "invalid_format": "Formato de archivo de build inválido"
+  },
+  "server": {
+    "not_found": "Instancia de servidor no encontrada",
+    "limit_reached": "Límite de servidores alcanzado. Máximo {{maxServers}} servidores permitidos",
+    "no_available_servers": "No se encontraron servidores disponibles. Por favor despliega un servidor primero",
+    "deploy_failed": "Error al desplegar el servidor",
+    "stop_failed": "Error al detener el servidor",
+    "cannot_stop": "El servidor no puede ser detenido en el estado actual: {{status}}",
+    "no_available_ports": "No hay puertos disponibles para nuevos servidores"
+  },
+  "studio": {
+    "not_found": "Estudio no encontrado",
+    "invalid_api_key": "Clave API inválida"
+  },
+  "validation": {
+    "email_invalid": "El correo debe ser una dirección de correo válida",
+    "password_too_short": "La contraseña debe tener al menos 8 caracteres",
+    "required_field": "{{field}} es requerido",
+    "invalid_uuid": "Formato de ID inválido"
+  },
+  "general": {
+    "internal_error": "Error interno del servidor. Por favor intenta más tarde",
+    "not_found": "Recurso no encontrado",
+    "forbidden": "No tienes permiso para realizar esta acción"
+  }
+}

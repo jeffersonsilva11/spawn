@@ -1,0 +1,46 @@
+{
+  "auth": {
+    "invalid_credentials": "Invalid email or password",
+    "email_exists": "Email already exists",
+    "unauthorized": "Unauthorized access",
+    "token_expired": "Authentication token has expired",
+    "invalid_token": "Invalid authentication token"
+  },
+  "project": {
+    "not_found": "Project not found",
+    "unauthorized": "You do not have access to this project",
+    "name_required": "Project name is required",
+    "name_too_long": "Project name cannot exceed 100 characters"
+  },
+  "build": {
+    "not_found": "Build not found",
+    "not_ready": "Build is not ready for deployment",
+    "upload_failed": "Failed to upload build",
+    "file_too_large": "Build file exceeds maximum size of 500MB",
+    "invalid_format": "Invalid build file format"
+  },
+  "server": {
+    "not_found": "Server instance not found",
+    "limit_reached": "Server limit reached. Maximum {{maxServers}} servers allowed",
+    "no_available_servers": "No available servers found. Please deploy a server first",
+    "deploy_failed": "Failed to deploy server",
+    "stop_failed": "Failed to stop server",
+    "cannot_stop": "Server cannot be stopped in current status: {{status}}",
+    "no_available_ports": "No available ports for new servers"
+  },
+  "studio": {
+    "not_found": "Studio not found",
+    "invalid_api_key": "Invalid API key"
+  },
+  "validation": {
+    "email_invalid": "Email must be a valid email address",
+    "password_too_short": "Password must be at least 8 characters long",
+    "required_field": "{{field}} is required",
+    "invalid_uuid": "Invalid ID format"
+  },
+  "general": {
+    "internal_error": "Internal server error. Please try again later",
+    "not_found": "Resource not found",
+    "forbidden": "You do not have permission to perform this action"
+  }
+}

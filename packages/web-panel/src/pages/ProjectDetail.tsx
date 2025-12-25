@@ -36,7 +36,39 @@ interface Server {
   createdAt: string;
 }
 
-type TabType = 'overview' | 'builds' | 'servers';
+interface Player {
+  id: string;
+  playerId: string;
+  displayName?: string;
+  email?: string;
+  createdAt: string;
+}
+
+interface AnalyticsStats {
+  totalEvents: number;
+  totalPlayers: number;
+  uniqueEventNames: string[];
+  recentEvents: Array<{
+    id: string;
+    eventName: string;
+    playerId?: string;
+    timestamp: string;
+  }>;
+  topEvents: Array<{
+    eventName: string;
+    count: number;
+  }>;
+}
+
+interface LeaderboardEntry {
+  rank: number;
+  playerId: string;
+  playerDisplayName?: string;
+  score: number;
+  metadata: Record<string, any>;
+}
+
+type TabType = 'overview' | 'builds' | 'servers' | 'players' | 'analytics' | 'leaderboards';
 
 export const ProjectDetail: React.FC = () => {
   const { projectId } = useParams<{ projectId: string }>();
@@ -48,6 +80,11 @@ export const ProjectDetail: React.FC = () => {
   const [project, setProject] = useState<Project | null>(null);
   const [builds, setBuilds] = useState<Build[]>([]);
   const [servers, setServers] = useState<Server[]>([]);
+  const [players, setPlayers] = useState<Player[]>([]);
+  const [analyticsStats, setAnalyticsStats] = useState<AnalyticsStats | null>(null);
+  const [leaderboards, setLeaderboards] = useState<string[]>([]);
+  const [selectedLeaderboard, setSelectedLeaderboard] = useState<string>('');
+  const [leaderboardEntries, setLeaderboardEntries] = useState<LeaderboardEntry[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
@@ -65,6 +102,12 @@ export const ProjectDetail: React.FC = () => {
   useEffect(() => {
     loadProjectData();
   }, [projectId]);
+
+  useEffect(() => {
+    if (activeTab === 'analytics' && projectId && !analyticsStats) {
+      loadAnalytics();
+    }
+  }, [activeTab, projectId]);
 
   const loadProjectData = async () => {
     if (!projectId) return;
@@ -87,6 +130,17 @@ export const ProjectDetail: React.FC = () => {
       setError(err.response?.data?.message || 'Failed to load project');
     } finally {
       setLoading(false);
+    }
+  };
+
+  const loadAnalytics = async () => {
+    if (!projectId) return;
+
+    try {
+      const stats = await api.getAnalyticsStats(projectId);
+      setAnalyticsStats(stats);
+    } catch (err: any) {
+      console.error('Error loading analytics:', err);
     }
   };
 
@@ -228,6 +282,18 @@ export const ProjectDetail: React.FC = () => {
               onClick={() => setActiveTab('servers')}
             >
               Servers ({servers.length})
+            </button>
+            <button
+              className={`tab ${activeTab === 'analytics' ? 'active' : ''}`}
+              onClick={() => setActiveTab('analytics')}
+            >
+              Analytics
+            </button>
+            <button
+              className={`tab ${activeTab === 'leaderboards' ? 'active' : ''}`}
+              onClick={() => setActiveTab('leaderboards')}
+            >
+              Leaderboards
             </button>
           </div>
         </div>
@@ -402,6 +468,102 @@ export const ProjectDetail: React.FC = () => {
                   ))}
                 </div>
               )}
+            </div>
+          )}
+
+          {/* Analytics Tab */}
+          {activeTab === 'analytics' && (
+            <div className="analytics-tab">
+              <h2>Analytics</h2>
+
+              {analyticsStats ? (
+                <>
+                  <div className="stats-grid">
+                    <div className="stat-card">
+                      <h3>Total Events</h3>
+                      <p className="stat-value">{analyticsStats.totalEvents}</p>
+                    </div>
+                    <div className="stat-card">
+                      <h3>Total Players</h3>
+                      <p className="stat-value">{analyticsStats.totalPlayers}</p>
+                    </div>
+                    <div className="stat-card">
+                      <h3>Unique Events</h3>
+                      <p className="stat-value">{analyticsStats.uniqueEventNames.length}</p>
+                    </div>
+                  </div>
+
+                  <div className="analytics-section">
+                    <h3>Top Events</h3>
+                    {analyticsStats.topEvents.length > 0 ? (
+                      <table className="data-table">
+                        <thead>
+                          <tr>
+                            <th>Event Name</th>
+                            <th>Count</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          {analyticsStats.topEvents.map((event) => (
+                            <tr key={event.eventName}>
+                              <td>{event.eventName}</td>
+                              <td>{event.count}</td>
+                            </tr>
+                          ))}
+                        </tbody>
+                      </table>
+                    ) : (
+                      <p className="empty-message">No events tracked yet</p>
+                    )}
+                  </div>
+
+                  <div className="analytics-section">
+                    <h3>Recent Events</h3>
+                    {analyticsStats.recentEvents.length > 0 ? (
+                      <table className="data-table">
+                        <thead>
+                          <tr>
+                            <th>Event Name</th>
+                            <th>Player ID</th>
+                            <th>Timestamp</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          {analyticsStats.recentEvents.map((event) => (
+                            <tr key={event.id}>
+                              <td>{event.eventName}</td>
+                              <td>{event.playerId || 'Anonymous'}</td>
+                              <td>{new Date(event.timestamp).toLocaleString()}</td>
+                            </tr>
+                          ))}
+                        </tbody>
+                      </table>
+                    ) : (
+                      <p className="empty-message">No recent events</p>
+                    )}
+                  </div>
+                </>
+              ) : (
+                <div className="empty-state">
+                  <h3>Loading analytics...</h3>
+                  <p>Please wait while we fetch your analytics data</p>
+                </div>
+              )}
+            </div>
+          )}
+
+          {/* Leaderboards Tab */}
+          {activeTab === 'leaderboards' && (
+            <div className="leaderboards-tab">
+              <h2>Leaderboards</h2>
+
+              <div className="empty-state">
+                <h3>No Leaderboards Yet</h3>
+                <p>Leaderboards will appear here once players submit scores from your game</p>
+                <p className="help-text">
+                  Use the Unity SDK to submit scores: <code>GameBackend.Leaderboard.SubmitScore("leaderboard_name", score)</code>
+                </p>
+              </div>
             </div>
           )}
         </div>

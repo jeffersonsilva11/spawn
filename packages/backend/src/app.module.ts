@@ -17,6 +17,10 @@ import {
   ProjectOrm,
   BuildOrm,
   ServerInstanceOrm,
+  PlayerEntityOrm,
+  PlayerDataEntityOrm,
+  AnalyticsEventEntityOrm,
+  LeaderboardEntityOrm,
 } from './infrastructure/database/entities';
 
 // Repositories
@@ -26,6 +30,10 @@ import {
   ProjectRepository,
   BuildRepository,
   ServerInstanceRepository,
+  PlayerRepository,
+  PlayerDataRepository,
+  AnalyticsEventRepository,
+  LeaderboardRepository,
 } from './infrastructure/database/repositories';
 
 // Services
@@ -43,6 +51,14 @@ import {
   StopServerUseCase,
   UpdateHeartbeatUseCase,
   GetOrCreateServerUseCase,
+  RegisterPlayerUseCase,
+  LoginPlayerUseCase,
+  SavePlayerDataUseCase,
+  LoadPlayerDataUseCase,
+  TrackEventUseCase,
+  GetAnalyticsStatsUseCase,
+  SubmitScoreUseCase,
+  GetLeaderboardUseCase,
 } from './application/use-cases';
 
 // Controllers
@@ -52,6 +68,9 @@ import {
   ServersController,
   SdkController,
   HealthController,
+  PlayersController,
+  AnalyticsController,
+  LeaderboardsController,
 } from './interfaces/http/controllers';
 
 // Strategies
@@ -87,7 +106,7 @@ import { IStorageService, IOrchestratorService, IHashService } from './domain/in
         username: configService.get('DB_USERNAME'),
         password: configService.get('DB_PASSWORD'),
         database: configService.get('DB_NAME'),
-        entities: [UserOrm, StudioOrm, ProjectOrm, BuildOrm, ServerInstanceOrm],
+        entities: [UserOrm, StudioOrm, ProjectOrm, BuildOrm, ServerInstanceOrm, PlayerEntityOrm, PlayerDataEntityOrm, AnalyticsEventEntityOrm, LeaderboardEntityOrm],
         synchronize: configService.get('DB_SYNCHRONIZE') === 'true',
         logging: configService.get('DB_LOGGING') === 'true',
       }),
@@ -99,6 +118,10 @@ import { IStorageService, IOrchestratorService, IHashService } from './domain/in
       ProjectOrm,
       BuildOrm,
       ServerInstanceOrm,
+      PlayerEntityOrm,
+      PlayerDataEntityOrm,
+      AnalyticsEventEntityOrm,
+      LeaderboardEntityOrm,
     ]),
 
     // JWT
@@ -123,6 +146,9 @@ import { IStorageService, IOrchestratorService, IHashService } from './domain/in
     ProjectsController,
     ServersController,
     SdkController,
+    PlayersController,
+    AnalyticsController,
+    LeaderboardsController,
   ],
 
   providers: [
@@ -151,6 +177,22 @@ import { IStorageService, IOrchestratorService, IHashService } from './domain/in
       provide: 'IServerInstanceRepository',
       useClass: ServerInstanceRepository,
     },
+    {
+      provide: 'IPlayerRepository',
+      useClass: PlayerRepository,
+    },
+    {
+      provide: 'IPlayerDataRepository',
+      useClass: PlayerDataRepository,
+    },
+    {
+      provide: 'IAnalyticsEventRepository',
+      useClass: AnalyticsEventRepository,
+    },
+    {
+      provide: 'ILeaderboardRepository',
+      useClass: LeaderboardRepository,
+    },
 
     // Direct repository injection for use cases
     UserRepository,
@@ -158,6 +200,10 @@ import { IStorageService, IOrchestratorService, IHashService } from './domain/in
     ProjectRepository,
     BuildRepository,
     ServerInstanceRepository,
+    PlayerRepository,
+    PlayerDataRepository,
+    AnalyticsEventRepository,
+    LeaderboardRepository,
 
     // Services
     {
@@ -187,6 +233,14 @@ import { IStorageService, IOrchestratorService, IHashService } from './domain/in
     StopServerUseCase,
     UpdateHeartbeatUseCase,
     GetOrCreateServerUseCase,
+    RegisterPlayerUseCase,
+    LoginPlayerUseCase,
+    SavePlayerDataUseCase,
+    LoadPlayerDataUseCase,
+    TrackEventUseCase,
+    GetAnalyticsStatsUseCase,
+    SubmitScoreUseCase,
+    GetLeaderboardUseCase,
   ],
 })
 export class AppModule {}

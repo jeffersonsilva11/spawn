@@ -1,0 +1,35 @@
+version: '3.8'
+
+# Simplified docker-compose for LOCAL DEVELOPMENT
+# Only runs PostgreSQL in Docker
+# Run backend, orchestrator, and web-panel with npm directly
+
+services:
+  # PostgreSQL Database
+  postgres:
+    image: postgres:15-alpine
+    container_name: gamebackend-postgres
+    environment:
+      POSTGRES_USER: gamebackend
+      POSTGRES_PASSWORD: gamebackend_password
+      POSTGRES_DB: gamebackend
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - game-backend-network
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U gamebackend"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+networks:
+  game-backend-network:
+    driver: bridge
+    name: game-backend-network
+
+volumes:
+  postgres_data:
+    driver: local

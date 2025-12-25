@@ -46,48 +46,54 @@ spawn/
 ### Prerequisites
 
 - Node.js 18+
-- Docker and Docker Compose
-- Unity 2022 LTS+ (for server builds)
-- PostgreSQL (via Docker)
+- Docker Desktop (rodando)
+- Unity 2022 LTS+ (para builds de servidor)
 
-### 1. Clone and Install
+### Setup Automático (Recomendado)
 
 ```bash
+# 1. Clone o repositório
 git clone <repository-url>
 cd spawn
-npm install
+
+# 2. Execute o script de setup
+./scripts/dev-setup.sh
 ```
 
-### 2. Configure Environment
+O script vai:
+- Verificar dependências
+- Instalar pacotes npm
+- Criar arquivo .env
+- Iniciar PostgreSQL no Docker
+- Resolver vulnerabilidades automaticamente
+
+### Iniciar Desenvolvimento
+
+Abra **3 terminais** e rode:
 
 ```bash
-cp .env.example .env
-# Edit .env with your configuration
+# Terminal 1 - Backend
+cd packages/backend
+npm run start:dev
+
+# Terminal 2 - Orchestrator
+cd packages/orchestrator
+npm run start:dev
+
+# Terminal 3 - Web Panel
+cd packages/web-panel
+npm run dev
 ```
 
-### 3. Start Services
+### Acessar
 
-```bash
-docker-compose up -d
-```
+- **Web Panel:** http://localhost:3002
+- **Backend API:** http://localhost:3000/health
+- **Docs:** `docs/` folder
 
-This starts:
-- PostgreSQL (port 5432)
-- Backend API (port 3000)
-- Orchestrator (port 3001)
-- Web Panel (port 3002)
+### Problemas?
 
-### 4. Access Web Panel
-
-Open http://localhost:3002 and create an account.
-
-### 5. Build and Upload Unity Server
-
-See [docs/unity-server-guide.md](./docs/unity-server-guide.md) for detailed instructions.
-
-### 6. Integrate Unity SDK
-
-See [docs/unity-sdk-guide.md](./docs/unity-sdk-guide.md) for client integration.
+Veja [docs/local-development.md](./docs/local-development.md) para troubleshooting detalhado.
 
 ## 🔑 Key Features
 

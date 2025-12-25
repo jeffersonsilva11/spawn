@@ -1,0 +1,20 @@
+{
+  "name": "com.gamebackend.sdk",
+  "version": "1.0.0",
+  "displayName": "Game Backend SDK",
+  "description": "Unity SDK for Indie Game Backend Platform - Connect your multiplayer games to managed servers",
+  "unity": "2022.3",
+  "keywords": [
+    "multiplayer",
+    "backend",
+    "networking",
+    "server",
+    "gamebackend"
+  ],
+  "author": {
+    "name": "Game Backend Platform",
+    "url": "https://github.com/your-org/spawn"
+  },
+  "dependencies": {},
+  "license": "MIT"
+}

@@ -1,0 +1,48 @@
+{
+  "name": "indie-game-backend-platform",
+  "version": "1.0.0",
+  "description": "Backend infrastructure and runtime automation for indie Unity multiplayer games",
+  "private": true,
+  "workspaces": [
+    "packages/*"
+  ],
+  "scripts": {
+    "install:all": "npm install && npm run install:packages",
+    "install:packages": "npm install --workspace=packages/backend && npm install --workspace=packages/orchestrator && npm install --workspace=packages/web-panel",
+    "dev": "docker-compose up",
+    "dev:build": "docker-compose up --build",
+    "dev:down": "docker-compose down",
+    "dev:clean": "docker-compose down -v",
+    "backend:dev": "npm run start:dev --workspace=packages/backend",
+    "backend:build": "npm run build --workspace=packages/backend",
+    "backend:test": "npm run test --workspace=packages/backend",
+    "orchestrator:dev": "npm run start:dev --workspace=packages/orchestrator",
+    "orchestrator:build": "npm run build --workspace=packages/orchestrator",
+    "orchestrator:test": "npm run test --workspace=packages/orchestrator",
+    "web:dev": "npm start --workspace=packages/web-panel",
+    "web:build": "npm run build --workspace=packages/web-panel",
+    "test": "npm run test --workspaces --if-present",
+    "build": "npm run build --workspaces --if-present",
+    "lint": "npm run lint --workspaces --if-present",
+    "format": "prettier --write \"packages/**/*.{ts,tsx,js,jsx,json,md}\"",
+    "setup:local": "./scripts/setup-local.sh",
+    "deploy:aws": "./scripts/deploy-aws.sh"
+  },
+  "keywords": [
+    "unity",
+    "multiplayer",
+    "game-backend",
+    "docker",
+    "nestjs",
+    "indie-games"
+  ],
+  "author": "Your Name",
+  "license": "MIT",
+  "devDependencies": {
+    "prettier": "^3.0.0"
+  },
+  "engines": {
+    "node": ">=18.0.0",
+    "npm": ">=9.0.0"
+  }
+}

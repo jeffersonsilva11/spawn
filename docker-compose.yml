@@ -1,0 +1,146 @@
+version: '3.8'
+
+services:
+  # PostgreSQL Database
+  postgres:
+    image: postgres:15-alpine
+    container_name: gamebackend-postgres
+    environment:
+      POSTGRES_USER: gamebackend
+      POSTGRES_PASSWORD: gamebackend_password
+      POSTGRES_DB: gamebackend
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - game-backend-network
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U gamebackend"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # Backend API
+  backend:
+    build:
+      context: ./packages/backend
+      dockerfile: Dockerfile
+    container_name: gamebackend-api
+    ports:
+      - "3000:3000"
+    environment:
+      NODE_ENV: development
+      BACKEND_PORT: 3000
+      BACKEND_HOST: 0.0.0.0
+
+      # Database
+      DB_HOST: postgres
+      DB_PORT: 5432
+      DB_USERNAME: gamebackend
+      DB_PASSWORD: gamebackend_password
+      DB_NAME: gamebackend
+      DB_SYNCHRONIZE: "true"
+      DB_LOGGING: "false"
+
+      # JWT
+      JWT_SECRET: dev-jwt-secret-change-in-production
+      JWT_EXPIRES_IN: 7d
+      JWT_REFRESH_SECRET: dev-jwt-refresh-secret
+      JWT_REFRESH_EXPIRES_IN: 30d
+
+      # Orchestrator
+      ORCHESTRATOR_URL: http://orchestrator:3001
+      ORCHESTRATOR_SECRET: dev-orchestrator-secret
+
+      # AWS (use localstack or real credentials)
+      AWS_REGION: us-east-1
+      AWS_ACCESS_KEY_ID: ${AWS_ACCESS_KEY_ID:-test}
+      AWS_SECRET_ACCESS_KEY: ${AWS_SECRET_ACCESS_KEY:-test}
+      S3_BUCKET_NAME: unity-game-builds
+      S3_BUILDS_PREFIX: builds/
+
+      # Server Config
+      PUBLIC_IP: localhost
+      MAX_SERVERS_PER_STUDIO: 10
+
+      # CORS
+      CORS_ORIGIN: http://localhost:3002
+    depends_on:
+      postgres:
+        condition: service_healthy
+      orchestrator:
+        condition: service_started
+    networks:
+      - game-backend-network
+    volumes:
+      - ./packages/backend/src:/app/src
+    command: npm run start:dev
+
+  # Orchestrator Service
+  orchestrator:
+    build:
+      context: ./packages/orchestrator
+      dockerfile: Dockerfile
+    container_name: gamebackend-orchestrator
+    ports:
+      - "3001:3001"
+    environment:
+      NODE_ENV: development
+      ORCHESTRATOR_PORT: 3001
+      ORCHESTRATOR_HOST: 0.0.0.0
+      ORCHESTRATOR_SECRET: dev-orchestrator-secret
+
+      # Docker
+      DOCKER_SOCKET: /var/run/docker.sock
+      UNITY_SERVER_PORT_RANGE_START: 7000
+      UNITY_SERVER_PORT_RANGE_END: 8000
+      UNITY_SERVER_NETWORK: game-backend-network
+
+      # Resource Limits
+      CONTAINER_CPU_LIMIT: 1
+      CONTAINER_MEMORY_LIMIT: 2g
+
+      # Health
+      HEARTBEAT_TIMEOUT_SECONDS: 60
+      HEALTH_CHECK_INTERVAL_SECONDS: 30
+
+      # Backend
+      BACKEND_URL: http://backend:3000
+
+      LOG_LEVEL: debug
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - ./packages/orchestrator/src:/app/src
+    networks:
+      - game-backend-network
+    command: npm run start:dev
+
+  # Web Panel
+  web-panel:
+    build:
+      context: ./packages/web-panel
+      dockerfile: Dockerfile
+    container_name: gamebackend-web-panel
+    ports:
+      - "3002:3002"
+    environment:
+      REACT_APP_API_URL: http://localhost:3000
+      PORT: 3002
+    depends_on:
+      - backend
+    networks:
+      - game-backend-network
+    volumes:
+      - ./packages/web-panel/src:/app/src
+      - ./packages/web-panel/public:/app/public
+    command: npm start
+
+networks:
+  game-backend-network:
+    driver: bridge
+    name: game-backend-network
+
+volumes:
+  postgres_data:
+    driver: local

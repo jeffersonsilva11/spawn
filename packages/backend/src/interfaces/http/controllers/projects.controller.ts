@@ -16,6 +16,7 @@ import {
   UploadedFile,
   HttpCode,
   HttpStatus,
+  Inject,
 } from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { JwtAuthGuard } from '../guards/jwt-auth.guard';
@@ -32,7 +33,9 @@ export class ProjectsController {
   constructor(
     private readonly createProjectUseCase: CreateProjectUseCase,
     private readonly uploadBuildUseCase: UploadBuildUseCase,
+    @Inject('IProjectRepository')
     private readonly projectRepository: IProjectRepository,
+    @Inject('IBuildRepository')
     private readonly buildRepository: IBuildRepository,
   ) {}
 

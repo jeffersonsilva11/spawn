@@ -22,9 +22,6 @@ export const LanguageSwitcher: React.FC<LanguageSwitcherProps> = ({ className = 
   const changeLanguage = (lng: SupportedLanguage) => {
     i18n.changeLanguage(lng);
     setIsOpen(false);
-
-    // Optional: Sync to backend
-    // syncLanguageToBackend(lng);
   };
 
   return (
@@ -121,25 +118,3 @@ export const LanguageSwitcher: React.FC<LanguageSwitcherProps> = ({ className = 
     </div>
   );
 };
-
-/**
- * Optional: Sync language preference to backend
- */
-async function syncLanguageToBackend(language: SupportedLanguage) {
-  try {
-    const token = localStorage.getItem('accessToken');
-    if (!token) return;
-
-    await fetch(`${import.meta.env.VITE_API_URL}/users/preferences`, {
-      method: 'PATCH',
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: `Bearer ${token}`,
-      },
-      body: JSON.stringify({ language }),
-    });
-  } catch (error) {
-    console.error('Failed to sync language to backend:', error);
-    // Non-critical - don't throw
-  }
-}

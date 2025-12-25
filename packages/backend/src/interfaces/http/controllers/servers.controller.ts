@@ -15,6 +15,7 @@ import {
   Request,
   HttpCode,
   HttpStatus,
+  Inject,
 } from '@nestjs/common';
 import { JwtAuthGuard } from '../guards/jwt-auth.guard';
 import {
@@ -31,6 +32,7 @@ export class ServersController {
     private readonly deployServerUseCase: DeployServerUseCase,
     private readonly stopServerUseCase: StopServerUseCase,
     private readonly updateHeartbeatUseCase: UpdateHeartbeatUseCase,
+    @Inject('IServerInstanceRepository')
     private readonly serverInstanceRepository: IServerInstanceRepository,
   ) {}
 

@@ -140,6 +140,21 @@ class ApiService {
     return response.data;
   }
 
+  // Analytics
+  async getAnalyticsStats(projectId: string) {
+    const response = await this.client.get(`/analytics/projects/${projectId}/stats`);
+    return response.data.stats;
+  }
+
+  // Leaderboards
+  async getLeaderboard(projectId: string, leaderboardName: string, limit?: number) {
+    const params = limit ? `?limit=${limit}` : '';
+    const response = await this.client.get(
+      `/leaderboards/projects/${projectId}/${leaderboardName}${params}`
+    );
+    return response.data.leaderboard;
+  }
+
   // Stats
   async getStats() {
     const response = await this.client.get('/stats');

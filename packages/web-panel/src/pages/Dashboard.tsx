@@ -5,7 +5,7 @@
  */
 
 import React, { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { useAuth } from '../context/AuthContext';
 import { LanguageSwitcher } from '../components/LanguageSwitcher';
@@ -201,13 +201,17 @@ export const Dashboard: React.FC = () => {
               </div>
               <div className="projects-grid">
                 {projects.map((project) => (
-                  <div key={project.id} className="project-card">
+                  <Link
+                    key={project.id}
+                    to={`/dashboard/projects/${project.id}`}
+                    className="project-card"
+                  >
                     <h3>{project.name}</h3>
                     {project.description && <p>{project.description}</p>}
                     <div className="project-meta">
                       <small>{t('projects.created')}: {new Date(project.createdAt).toLocaleDateString()}</small>
                     </div>
-                  </div>
+                  </Link>
                 ))}
               </div>
             </section>

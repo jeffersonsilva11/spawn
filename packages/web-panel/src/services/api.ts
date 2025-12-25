@@ -72,23 +72,23 @@ class ApiService {
   // Projects
   async getProjects() {
     const response = await this.client.get('/projects');
-    return response.data;
+    return response.data.projects || [];
   }
 
   async createProject(data: { name: string; description?: string }) {
     const response = await this.client.post('/projects', data);
-    return response.data;
+    return response.data.project;
   }
 
   async getProject(projectId: string) {
     const response = await this.client.get(`/projects/${projectId}`);
-    return response.data;
+    return response.data.project;
   }
 
   // Builds
   async getBuilds(projectId: string) {
     const response = await this.client.get(`/projects/${projectId}/builds`);
-    return response.data;
+    return response.data.builds || [];
   }
 
   async uploadBuild(projectId: string, file: File, version: string) {
@@ -110,8 +110,8 @@ class ApiService {
 
   // Servers
   async getServers(projectId: string) {
-    const response = await this.client.get(`/projects/${projectId}/servers`);
-    return response.data;
+    const response = await this.client.get('/servers');
+    return response.data.servers || [];
   }
 
   async deployServer(projectId: string, buildId: string, region: string) {

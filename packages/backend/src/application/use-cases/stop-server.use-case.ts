@@ -4,6 +4,7 @@
  * Business logic for stopping a running server instance.
  */
 
+import { Injectable, Inject } from '@nestjs/common';
 import {
   IServerInstanceRepository,
   IProjectRepository,
@@ -20,10 +21,14 @@ export interface StopServerResponse {
   status: string;
 }
 
+@Injectable()
 export class StopServerUseCase {
   constructor(
+    @Inject('IServerInstanceRepository')
     private readonly serverInstanceRepository: IServerInstanceRepository,
+    @Inject('IProjectRepository')
     private readonly projectRepository: IProjectRepository,
+    @Inject('IOrchestratorService')
     private readonly orchestratorService: IOrchestratorService,
   ) {}
 

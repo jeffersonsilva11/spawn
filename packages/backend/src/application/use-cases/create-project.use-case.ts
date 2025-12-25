@@ -4,6 +4,7 @@
  * Business logic for creating a new project within a studio.
  */
 
+import { Injectable, Inject } from '@nestjs/common';
 import { Project } from '../../domain/entities';
 import { IProjectRepository } from '../../domain/repositories';
 import { v4 as uuidv4 } from 'uuid';
@@ -21,8 +22,12 @@ export interface CreateProjectResponse {
   createdAt: Date;
 }
 
+@Injectable()
 export class CreateProjectUseCase {
-  constructor(private readonly projectRepository: IProjectRepository) {}
+  constructor(
+    @Inject('IProjectRepository')
+    private readonly projectRepository: IProjectRepository,
+  ) {}
 
   async execute(request: CreateProjectRequest): Promise<CreateProjectResponse> {
     // Validate project input

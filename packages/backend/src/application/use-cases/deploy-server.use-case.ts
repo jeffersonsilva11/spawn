@@ -4,6 +4,7 @@
  * Business logic for deploying a Unity server instance.
  */
 
+import { Injectable, Inject } from '@nestjs/common';
 import { ServerInstance, ServerStatus } from '../../domain/entities';
 import {
   IServerInstanceRepository,
@@ -29,12 +30,18 @@ export interface DeployServerResponse {
   port: number | null;
 }
 
+@Injectable()
 export class DeployServerUseCase {
   constructor(
+    @Inject('IServerInstanceRepository')
     private readonly serverInstanceRepository: IServerInstanceRepository,
+    @Inject('IBuildRepository')
     private readonly buildRepository: IBuildRepository,
+    @Inject('IProjectRepository')
     private readonly projectRepository: IProjectRepository,
+    @Inject('IStudioRepository')
     private readonly studioRepository: IStudioRepository,
+    @Inject('IOrchestratorService')
     private readonly orchestratorService: IOrchestratorService,
   ) {}
 

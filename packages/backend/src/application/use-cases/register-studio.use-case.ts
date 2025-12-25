@@ -4,6 +4,7 @@
  * Business logic for registering a new studio with an admin user.
  */
 
+import { Injectable, Inject } from '@nestjs/common';
 import { User, Studio } from '../../domain/entities';
 import {
   IUserRepository,
@@ -26,10 +27,14 @@ export interface RegisterStudioResponse {
   apiKey: string;
 }
 
+@Injectable()
 export class RegisterStudioUseCase {
   constructor(
+    @Inject('IUserRepository')
     private readonly userRepository: IUserRepository,
+    @Inject('IStudioRepository')
     private readonly studioRepository: IStudioRepository,
+    @Inject('IHashService')
     private readonly hashService: IHashService,
   ) {}
 

@@ -4,6 +4,7 @@
  * Business logic for user authentication.
  */
 
+import { Injectable, Inject } from '@nestjs/common';
 import { IUserRepository } from '../../domain/repositories';
 import { IHashService } from '../../domain/interfaces';
 
@@ -18,9 +19,12 @@ export interface LoginResponse {
   studioId: string;
 }
 
+@Injectable()
 export class LoginUseCase {
   constructor(
+    @Inject('IUserRepository')
     private readonly userRepository: IUserRepository,
+    @Inject('IHashService')
     private readonly hashService: IHashService,
   ) {}
 

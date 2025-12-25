@@ -12,10 +12,10 @@ export class UserOrm {
   @PrimaryColumn('uuid')
   id: string;
 
-  @Column({ unique: true })
+  @Column({ type: 'varchar', unique: true })
   email: string;
 
-  @Column({ name: 'password_hash' })
+  @Column({ name: 'password_hash', type: 'varchar' })
   passwordHash: string;
 
   @Column({ name: 'studio_id', type: 'uuid' })

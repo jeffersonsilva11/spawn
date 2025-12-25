@@ -11,10 +11,10 @@ export class StudioOrm {
   @PrimaryColumn('uuid')
   id: string;
 
-  @Column()
+  @Column({ type: 'varchar' })
   name: string;
 
-  @Column({ name: 'api_key', unique: true })
+  @Column({ name: 'api_key', type: 'varchar', unique: true })
   apiKey: string;
 
   @Column({ name: 'max_servers', type: 'int', default: 10 })

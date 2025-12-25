@@ -19,7 +19,7 @@ export class ProjectOrm {
   @JoinColumn({ name: 'studio_id' })
   studio: StudioOrm;
 
-  @Column()
+  @Column({ type: 'varchar' })
   name: string;
 
   @Column({ type: 'text', default: '' })

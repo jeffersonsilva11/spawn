@@ -18,13 +18,13 @@ export class BuildOrm {
   @JoinColumn({ name: 'project_id' })
   project: ProjectOrm;
 
-  @Column()
+  @Column({ type: 'varchar' })
   version: string;
 
-  @Column({ name: 's3_key' })
+  @Column({ name: 's3_key', type: 'varchar' })
   s3Key: string;
 
-  @Column({ name: 'docker_image', nullable: true })
+  @Column({ name: 'docker_image', type: 'varchar', nullable: true })
   dockerImage: string | null;
 
   @Column({ type: 'varchar', default: 'ready' })

@@ -5,6 +5,7 @@
  * This is the main entry point for clients to connect to servers.
  */
 
+import { Injectable, Inject } from '@nestjs/common';
 import {
   IServerInstanceRepository,
   IProjectRepository,
@@ -23,10 +24,14 @@ export interface GetOrCreateServerResponse {
   status: string;
 }
 
+@Injectable()
 export class GetOrCreateServerUseCase {
   constructor(
+    @Inject('IServerInstanceRepository')
     private readonly serverInstanceRepository: IServerInstanceRepository,
+    @Inject('IProjectRepository')
     private readonly projectRepository: IProjectRepository,
+    @Inject('IStudioRepository')
     private readonly studioRepository: IStudioRepository,
   ) {}
 

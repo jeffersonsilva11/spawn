@@ -4,6 +4,7 @@
  * Business logic for uploading a Unity server build.
  */
 
+import { Injectable, Inject } from '@nestjs/common';
 import { Build, BuildStatus } from '../../domain/entities';
 import { IBuildRepository, IProjectRepository } from '../../domain/repositories';
 import { IStorageService } from '../../domain/interfaces';
@@ -24,10 +25,14 @@ export interface UploadBuildResponse {
   s3Key: string;
 }
 
+@Injectable()
 export class UploadBuildUseCase {
   constructor(
+    @Inject('IBuildRepository')
     private readonly buildRepository: IBuildRepository,
+    @Inject('IProjectRepository')
     private readonly projectRepository: IProjectRepository,
+    @Inject('IStorageService')
     private readonly storageService: IStorageService,
   ) {}
 

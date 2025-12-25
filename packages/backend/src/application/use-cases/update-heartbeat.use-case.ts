@@ -4,6 +4,7 @@
  * Business logic for updating server heartbeat from Unity servers.
  */
 
+import { Injectable, Inject } from '@nestjs/common';
 import { IServerInstanceRepository } from '../../domain/repositories';
 
 export interface UpdateHeartbeatRequest {
@@ -15,8 +16,10 @@ export interface UpdateHeartbeatResponse {
   lastHeartbeat: Date;
 }
 
+@Injectable()
 export class UpdateHeartbeatUseCase {
   constructor(
+    @Inject('IServerInstanceRepository')
     private readonly serverInstanceRepository: IServerInstanceRepository,
   ) {}
 

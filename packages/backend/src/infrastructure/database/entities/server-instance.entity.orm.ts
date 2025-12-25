@@ -28,10 +28,10 @@ export class ServerInstanceOrm {
   @Column({ type: 'varchar' })
   status: string;
 
-  @Column({ name: 'container_id', nullable: true })
+  @Column({ name: 'container_id', type: 'varchar', nullable: true })
   containerId: string | null;
 
-  @Column({ nullable: true })
+  @Column({ type: 'varchar', nullable: true })
   ip: string | null;
 
   @Column({ type: 'int', nullable: true })
